@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Appbar from './components/Appbar';
+import Home from './components/Home';
+import Artist from './components/Artist';
 
-function App() {
+
+const App = (props) => {
+
+  const [open, setOpen] = useState(false);
+
+  const handleDrawerOpen = () => setOpen(true);
+  const handleDrawerClose = () => setOpen(false);
+  const handleDrawerToggle = () => setOpen(!open);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+      <div >
+          <Router>
+              <Appbar open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
+              <Switch>
+
+                    <Route exact path={["/", "/home"]} >
+                      <Home open={open} handleDrawerOpen={handleDrawerToggle} />
+                    </Route>
+
+                    <Route path="/artist/:slug" >
+                      <Artist  open={open} handleDrawerOpen={handleDrawerToggle} />
+                    </Route>
+
+              </Switch>
+          </Router>
+      </div>
+  )
+};
 
 export default App;

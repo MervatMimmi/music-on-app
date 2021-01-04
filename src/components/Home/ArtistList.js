@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-//import { graphql } from 'react-apollo';
-import { useQuery, gql } from '@apollo/client';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Checkbox, FormControlLabel } from '@material-ui/core';
@@ -40,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
     listItemHeaderText: {
         transition: "all 0.3s linear",
         maxWidth: "40ch",
-        textAlign: 'center',   
+        textAlign: 'center',
+        color: 'black'
     },
   }));
 
@@ -66,7 +65,7 @@ export default function ArtistList({results, open}) {
             <div className={classes.toolbar} />
             <Grid container item xs={12} justify="center">
             <Grid container item xs={12} spacing={6} className = {classes.grid} >
-            <Grid container item xs = {12} >
+            <Grid container item xs = {12} style = {{margin: '25px'}}>
             <Grid item xs = {12} lg>
             <List dense className = {classes.root}>
                 <ListItem dense className = {classes.listItemHeader}>
@@ -76,16 +75,7 @@ export default function ArtistList({results, open}) {
                 {results.map((artist, id)  => {
                     const labelId = `checkbox-list-secondary-label-${artist.name}`;
                     return (
-                        <ListItem key = {id} button component = {Link} to ={`/artist/${artist.slug}`}>
-                            <FormControlLabel
-                                control = {
-                                    <Checkbox icon = {<FavoriteBorder />} 
-                                            checkedIcon ={<Favorite />} 
-                                            name = 'checkedH' />}
-                                            edge = 'start'
-                                            onChange = {handleToggle(artist)}
-                                            checked = {checked.indexOf(artist) !== -1}
-                            />
+                        <ListItem key = {id} button component = {Link} to ={`/artist/${artist.slug}`} style = {{marginTop: '25px', marginBottom: '25px', paddingLeft: '60px' }}>
                             <ListItemAvatar>
                                 <Avatar 
                                     alt={artist + 1}

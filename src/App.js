@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Appbar from './components/Appbar';
+import AppbarDrawer from './components/Appbar';
 import Home from './components/Home';
 import Artist from './components/Artist';
+import './App.css';
 
 
-const App = (props) => {
+
+const App = () => {
 
   const [open, setOpen] = useState(false);
 
@@ -13,10 +15,12 @@ const App = (props) => {
   const handleDrawerClose = () => setOpen(false);
   const handleDrawerToggle = () => setOpen(!open);
 
+
+
   return (
-      <div >
+      <div>
           <Router>
-              <Appbar open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
+          <AppbarDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose = {handleDrawerClose} />
               <Switch>
 
                     <Route exact path={["/", "/home"]} >

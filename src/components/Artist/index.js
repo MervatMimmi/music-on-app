@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { gql, useQuery } from '@apollo/client'
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Checkbox, FormControlLabel } from '@material-ui/core';
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Checkbox, FormControlLabel} from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons';
+
 
 const useStyles = makeStyles((theme) => ({
     toolbar: {
@@ -30,22 +31,27 @@ const useStyles = makeStyles((theme) => ({
     listItemHeader: {
         background: "rgb(230, 230, 230)",
         color: "rgb(128, 128, 128)",
-        padding: "4px 12px",
+        padding: "8px 12px",
         [theme.breakpoints.up("md")]: {
-            //paddingLeft: "340px",
+            paddingLeft: "340px",
         },
     },
     listItemHeaderText: {
         transition: "all 0.3s linear",
         maxWidth: "40ch",
-        textAlign: 'center',   
+        textAlign: 'center',  
+        color: 'black', 
     },
+    large: {
+        width: theme.spacing(7),
+        height: theme.spacing(7),
+      },
   }));
 
   
 export default function SingleArtist() {
     const classes = useStyles();
-    const [results, setResults] = useState([]);
+    const [artistInfo, setArtistInfo] = useState([]);
     const [checked, setChecked] = useState([1]);
     const {slug} = useParams();
     const { loading, error, data} = useQuery(
@@ -54,22 +60,23 @@ export default function SingleArtist() {
         }
     );
 
-    useEffect(() => {
+   /* useEffect(() => {
         getData();
     })
 
     const getData = () => {
+        */
         if(loading)
             return <p>Loading artist...</p>
         if(error)
             return <p>Error...</p>
-        if(data) {
+        if(data !== null) {
             console.log(data.artist);
-            setResults(data.artist);
+            console.log(data.artist.name)
+            console.log(data.artist.artistImage.url)  
+            console.log(data.artist.albumsSongs)
         }
-    }
-    if(loading) return <p>Loading...</p>
-
+    
         const handleToggle = (value) => () => {
             const currentIndex = checked.indexOf(value);
             const newChecked = [...checked];
@@ -83,21 +90,54 @@ export default function SingleArtist() {
         };
     
     return (
-        <main>
+        <main >
             <div className={classes.toolbar} />
             <Grid container item xs={12} justify="center">
                 <Grid container item xs={12} spacing={6} className = {classes.grid} >
                     <Grid container item xs = {12} >
                         <Grid item xs = {12} lg>
                             <List dense className = {classes.root}>
-                                <ListItem dense className = {classes.listItemHeader}>
-                                    <Avatar
-                                        alt = {results.artist +1}
+                               <ListItem dense className = {classes.listItemHeader}>
+                                    <Avatar className = {classes.large}
+                                        alt = {data +1}
                                         src = {data.artist.artistImage.url}
                                         />
                                     <ListItemText className = {classes.listItemHeaderText} 
-                                        primary = {data.artist.name}/> 
+                                       primary = {data.artist.name}
+                                        /> 
                                 </ListItem>
+                               {data.artist.albumsSongs.map((file, id) => {
+                                   console.log(file);
+                                    return (
+                                        <ListItem key = {id} style = {{marginTop: '25px', marginBottom: '25px', paddingLeft: '60px' }}>
+                                            <FormControlLabel
+                                                control = {
+                                                    
+                                                    <Checkbox icon = {<FavoriteBorder />}
+                                                        checkedIcon = {<Favorite />}
+                                                        name = 'checked'/>}
+                                                        edge = 'start'
+                                                        onChange = {handleToggle(file)}
+                                                        checked = {checked.indexOf(file) !== -1}
+                                                        />
+                                                    <ListItemAvatar>
+                                                        <Avatar 
+                                                            alt = {file + 1}
+                                                            src = {file.albumImage ? file.albumImage.url : null}
+
+                                                    />
+                                                    </ListItemAvatar>
+                                                    <ListItemText className = {classes.listItemHeaderText} 
+                                                        primary = {file.albumName ? file.albumName : file.songTitle}
+                                        /> 
+                                        {file.songFile ? 
+                                            <audio controls>
+                                                <source src = {file.songFile.url}
+                                                    type = 'audio/mpeg' />
+                                            </audio> : null }
+                                     </ListItem>
+                                    )
+                                })}
                             </List>
                         </Grid>
                     </Grid>

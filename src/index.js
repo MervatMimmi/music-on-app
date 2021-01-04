@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+
 const client = new ApolloClient({
   uri: 'https://api-eu-central-1.graphcms.com/v2/ckizti6g3q0s701xjhic1bvm0/master',
   cache: new InMemoryCache()
@@ -12,7 +13,7 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client = {client}>
+    <ApolloProvider client = {client} >
       <App />
     </ApolloProvider>
     

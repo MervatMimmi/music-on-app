@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useQuery, gql } from '@apollo/client';
 import ArtistList from './ArtistList';
+import { Height } from '@material-ui/icons';
 
 export default function Home() {
   const { loading, error, data } = useQuery(ALL_ARTISTS);

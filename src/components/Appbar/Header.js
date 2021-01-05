@@ -1,15 +1,22 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import Typography  from '@material-ui/core/Typography';
+import {Grid, Typography}  from '@material-ui/core/';
+import logo from '../../Image/logo.jpg';
 
 const useStyles = makeStyles((theme) => ({
-    title: {
+    top: {
         paddingLeft: '500px',
-        display: 'none',
+        display: 'flex',
+        flexDirection: 'row',
         color: '#e7e7de',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        },
+    },
+    title: {
+        paddingTop: '10px',
+        paddingRight: '25px'
+    },
+    logo: {
+        maxHeight: '55px',
+        
     },
 }))
 
@@ -17,10 +24,14 @@ const Header = ({title}) => {
     const classes = useStyles();
 
     return (
-        <Typography className = {classes.title}
-            variant = 'h6'>
-            Home
-        </Typography>
+        <Grid className = {classes.top}>
+            <Typography variant = 'h6' className = {classes.title} style = {{textAlign: 'center'}}>
+                SoundWave
+            </Typography>
+            <Grid className = {classes.logo}>
+                <img src ={logo} alt = 'logo' className = {classes.logo} />
+            </Grid>
+        </Grid>
     )
 }
 

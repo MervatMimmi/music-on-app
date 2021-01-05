@@ -1,11 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Checkbox, FormControlLabel} from '@material-ui/core';
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Checkbox, FormControlLabel, Divider} from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons';
-
+import logo from '../../Image/logo.jpg';
+import SelectedFavorit from '../Favorits';
 
 const useStyles = makeStyles((theme) => ({
     toolbar: {
@@ -17,12 +18,14 @@ const useStyles = makeStyles((theme) => ({
         ...theme.mixins.toolbar
     },
     grid: {
-        padding: '25px',
+        padding: '75px',
         marginLeft: '200px',
         marginRight: '200px'
     },
     root: {
         flexGrow: 1,
+        paddingTop: '0px',
+        paddingBottom: '25px',
         boxShadow: "0px 1px 6px 0px rgba(0,0,0,0.7)",
         [theme.breakpoints.down("xs")]: {
             boxShadow: "none",
@@ -45,20 +48,31 @@ const useStyles = makeStyles((theme) => ({
     large: {
         width: theme.spacing(7),
         height: theme.spacing(7),
-      },
+    },
+    
   }));
 
   
 export default function SingleArtist() {
     const classes = useStyles();
-    const [artistInfo, setArtistInfo] = useState([]);
-    const [checked, setChecked] = useState([1]);
+    const [selected, setSelected] = useState([]);
+    const [dialogOpen, setDialogOpen] = useState(false);
     const {slug} = useParams();
     const { loading, error, data} = useQuery(
         GET_SINGLE_ARTIST, {
             variables: {slug: slug}
         }
     );
+
+    const handleSelected =(e, key) => {
+        console.log(key);
+        let tempSelect = {...selected};
+        tempSelect = e.target.value;
+        console.log(tempSelect);
+        setSelected(tempSelect);
+        setDialogOpen(true);
+        
+    }
 
    /* useEffect(() => {
         getData();
@@ -72,22 +86,14 @@ export default function SingleArtist() {
             return <p>Error...</p>
         if(data !== null) {
             console.log(data.artist);
-            console.log(data.artist.name)
-            console.log(data.artist.artistImage.url)  
-            console.log(data.artist.albumsSongs)
+           // console.log(data.artist.songs);
         }
     
-        const handleToggle = (value) => () => {
-            const currentIndex = checked.indexOf(value);
-            const newChecked = [...checked];
-    
-            if(currentIndex === -1) {
-                newChecked.push(value);
-            } else  {
-                newChecked.splice(currentIndex, 1);
-            }
-            setChecked(newChecked);
-        };
+        /*const handleToggle = (e) => () => {
+            console.log(e.target.value);
+            setChecked(e.target.value);
+            
+        };*/
     
     return (
         <main >
@@ -99,6 +105,9 @@ export default function SingleArtist() {
                             <List dense className = {classes.root}>
                                <ListItem dense className = {classes.listItemHeader}>
                                     <Avatar className = {classes.large}
+                                        variant="square"
+                                        width = 'auto'
+                                        height = '100%'
                                         alt = {data +1}
                                         src = {data.artist.artistImage.url}
                                         />
@@ -106,38 +115,99 @@ export default function SingleArtist() {
                                        primary = {data.artist.name}
                                         /> 
                                 </ListItem>
-                               {data.artist.albumsSongs.map((file, id) => {
-                                   console.log(file);
+                               {data.artist.albums.length !== 0 ? data.artist.albums.map((album, id) => {
+                                   console.log(album.id);
                                     return (
-                                        <ListItem key = {id} style = {{marginTop: '25px', marginBottom: '25px', paddingLeft: '60px' }}>
-                                            <FormControlLabel
-                                                control = {
-                                                    
-                                                    <Checkbox icon = {<FavoriteBorder />}
-                                                        checkedIcon = {<Favorite />}
-                                                        name = 'checked'/>}
-                                                        edge = 'start'
-                                                        onChange = {handleToggle(file)}
-                                                        checked = {checked.indexOf(file) !== -1}
-                                                        />
-                                                    <ListItemAvatar>
-                                                        <Avatar 
-                                                            alt = {file + 1}
-                                                            src = {file.albumImage ? file.albumImage.url : null}
-
+                                        <List key = {id} style = {{marginTop: '25px', marginBottom: '25px', paddingLeft: '60px' , display: 'flex', flexDirection: 'column'}}>
+                                            <ListItem className = {classes.albumTitle}>
+                                                <FormControlLabel
+                                                    control = {
+                                                        <Checkbox icon = {<FavoriteBorder />}
+                                                            checkedIcon = {<Favorite />}
+                                                            name = 'checked'/>}
+                                                            edge = 'start'
+                                                            value = {album.id}
+                                                            onChange = {handleSelected}
+                                                            //checked = {checked.indexOf(album) !== -1}
+                                                            />
+                                                            {dialogOpen && <SelectedFavorit selected = {selected} dialogOpen = {dialogOpen} />}
+                                                <ListItemAvatar>
+                                                    <Avatar 
+                                                        variant = {album.albumImage ? 'square' : null}
+                                                        className = {album.albumImage ? classes.large : null}
+                                                        alt = {album + 1}
+                                                        src = {album.albumImage ? album.albumImage.url : logo}
                                                     />
-                                                    </ListItemAvatar>
-                                                    <ListItemText className = {classes.listItemHeaderText} 
-                                                        primary = {file.albumName ? file.albumName : file.songTitle}
-                                        /> 
-                                        {file.songFile ? 
-                                            <audio controls>
-                                                <source src = {file.songFile.url}
-                                                    type = 'audio/mpeg' />
-                                            </audio> : null }
-                                     </ListItem>
+                                                </ListItemAvatar>
+                                                <ListItemText className = {classes.listItemHeaderText} 
+                                                        primary = {album.albumName}
+                                                />
+                                            </ListItem>
+                                           
+                                            {album.songs.map ((song, id) => {
+                                                    //console.log(song);
+                                                    return(
+                                                        <ListItem key = {id}>
+                                                            <FormControlLabel 
+                                                                control = {
+                                                                <Checkbox icon = {<FavoriteBorder />}
+                                                                    checkedIcon = {<Favorite />}
+                                                                    name = 'checked'/>}
+                                                                    edge = 'start'
+                                                                    //onChange = {handleToggle(song)}
+                                                                    //checked = {checked.indexOf(song) !== -1}
+                                                                    />
+                                                            <ListItemAvatar>
+                                                                <Avatar 
+                                                                    alt = {song + 1}
+                                                                    src = {logo}
+                                                                />
+                                                            </ListItemAvatar>
+                                                            <ListItemText className = {classes.listItemHeaderText} 
+                                                                    primary = {song.songTitle}
+                                                            />
+                                                            {song.songFile ? 
+                                                                <audio controls>
+                                                                <source src = {song.songFile.url}
+                                                                        type = 'audio/mpeg' />
+                                                                </audio> : null }
+                                                        </ListItem>
+                                                    )
+                                                })} 
+                                     </List>
                                     )
-                                })}
+                                }) : 
+                                data.artist.songs.map((song, id) => {
+                                    console.log(data.artist.songs);
+                                    return(
+                                        <ListItem key = {id}>
+                                            <FormControlLabel 
+                                                control = {
+                                                <Checkbox icon = {<FavoriteBorder />}
+                                                    checkedIcon = {<Favorite />}
+                                                    name = 'checked'/>}
+                                                    edge = 'start'
+                                                    //onChange = {handleToggle(song)}
+                                                    //checked = {checked.indexOf(song) !== -1}
+                                                    />
+                                            <ListItemAvatar>
+                                                <Avatar 
+                                                    alt = {song + 1}
+                                                    src = {logo}
+                                                />
+                                            </ListItemAvatar>
+                                            <ListItemText className = {classes.listItemHeaderText} 
+                                                    primary = {song.songTitle}
+                                            />
+                                            {song.songFile ? 
+                                                <audio controls>
+                                                <source src = {song.songFile.url}
+                                                        type = 'audio/mpeg' />
+                                                </audio> : null }
+                                        </ListItem>
+                                    )
+                                })
+                            }
                             </List>
                         </Grid>
                     </Grid>
@@ -157,7 +227,7 @@ const GET_SINGLE_ARTIST = gql`
             artistImage {
                 url
             }
-            albumsSongs {
+            albums {
                 ...on Album {
                   id
                   slug
@@ -169,17 +239,22 @@ const GET_SINGLE_ARTIST = gql`
                     id
                     slug
                     songTitle
-                  }
-                }
-                ...on Song {
-                  id
-                  slug
-                  songTitle
-                  songFile {
-                    url
+                    songFile {
+                        url
+                    }
                   }
                 }
               }
+            songs {
+                ...on Song {
+                    id
+                    slug
+                    songTitle
+                    songFile {
+                        url
+                    }
+                }
+            }
         }   
     } 
 `; 

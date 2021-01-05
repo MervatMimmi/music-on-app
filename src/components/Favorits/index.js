@@ -1,35 +1,34 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { useQuery, gql } from '@apollo/client';
-import ArtistList from './ArtistList';
+import DialogFavorit from './Dialog';
+
+const SelectedFavorit =({selected, dialogOpen}) => {
+    const Id = selected
+    const {loading, error, data} = useQuery(
+        GET_CHOOSEN_DATA, {
+            variables: {id: Id}
+        }
+    );
 
 
-export default function Home() {
-  const { loading, error, data } = useQuery(ALL_ARTISTS);
-  const [results, setResults] = useState([]);
-
-  useEffect(() => {
-    getData();
-  })
-
-  const getData =() => {
-  if(loading) 
-      return <p>Loading artist...</p>
-  if(error)
-      return <p>Error ...</p>
-  if(data) {
-    console.log(data.artists);
-    setResults(data.artists);
-  }
+    if(loading)
+        return <p>Loading artist...</p>
+    if(error)
+        return <p>Error...</p>
+    if(data !== null) {
+        console.log(data);
+    }
+    
+    return(
+        <DialogFavorit selected = {selected} dialogOpen = {dialogOpen} />
+        )
 }
 
-  return (
-        <ArtistList results = {results} />
-  )
-}
+export default SelectedFavorit;
 
-const ALL_ARTISTS =  gql`
-query GetAllArtists {
-    artists {
+const GET_CHOOSEN_DATA =  gql`
+query GetChoosenData($id : uuid!) {
+    artists(where: {id: { _eq: $id} }){
         id
         slug
         name
@@ -67,5 +66,4 @@ query GetAllArtists {
     }
 }
 `;
-
 

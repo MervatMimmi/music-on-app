@@ -16,12 +16,14 @@ const useStyles = makeStyles((theme) => ({
         ...theme.mixins.toolbar
     },
     grid: {
-        padding: '25px',
+        padding: '50px',
         marginLeft: '200px',
         marginRight: '200px'
     },
     root: {
         flexGrow: 1,
+        paddingTop: '0px',
+        paddingBottom: '25px',
         boxShadow: "0px 1px 6px 0px rgba(0,0,0,0.7)",
         [theme.breakpoints.down("xs")]: {
             boxShadow: "none",
@@ -38,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
     listItemHeaderText: {
         transition: "all 0.3s linear",
         maxWidth: "40ch",
-        textAlign: 'center',
+        //textAlign: 'center',
+        paddingLeft: '60px',
         color: 'black'
     },
   }));

@@ -104,7 +104,7 @@ const SideDrawer = (props) => {
                                     <HomeIcon fontSize="large" />
                                 </ListItemIcon>
                             </Tooltip>
-                            <ListItemText primary="Home" className={classes.textWhite}/>
+                            <ListItemText primary="MusicON" className={classes.textWhite}/>
                         </ListItem>
                     </NavLink>
 
@@ -121,7 +121,6 @@ const SideDrawer = (props) => {
 
                 </List>
             </Drawer>
-            
         </React.Fragment>
     )
 }

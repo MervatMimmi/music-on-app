@@ -36,7 +36,7 @@ query GetAllArtists {
         artistImage {
           url
         }
-         albums {
+        albums {
               ...on Album {
                 id
                 slug
@@ -54,8 +54,8 @@ query GetAllArtists {
                 }
               }
             }
-        songs {
-          ... on Song {
+      songs {
+            ... on Song {
               id
               slug
               songTitle

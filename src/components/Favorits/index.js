@@ -3,10 +3,10 @@ import { useQuery, gql } from '@apollo/client';
 import DialogFavorit from './Dialog';
 
 const SelectedFavorit =({selected, dialogOpen}) => {
-    const Id = selected
+  console.log(selected);
     const {loading, error, data} = useQuery(
         GET_CHOOSEN_DATA, {
-            variables: {id: Id}
+            variables: {id: selected}
         }
     );
 
@@ -20,49 +20,44 @@ const SelectedFavorit =({selected, dialogOpen}) => {
     }
     
     return(
-        <DialogFavorit selected = {selected} dialogOpen = {dialogOpen} />
+      <div></div>
+        //<DialogFavorit selected = {selected} dialogOpen = {dialogOpen} />
         )
 }
 
 export default SelectedFavorit;
 
 const GET_CHOOSEN_DATA =  gql`
-query GetChoosenData($id : uuid!) {
-    artists(where: {id: { _eq: $id} }){
-        id
-        slug
-        name
-        artistImage {
-          url
-        }
-         albums {
-              ...on Album {
-                id
-                slug
-                albumName
-                albumImage {
-                  url
-                }
-                songs {
-                  id
-                  slug
-                  songTitle
-                  songFile {
-                    url
-                  }
-                }
-              }
-            }
-        songs {
-          ... on Song {
-              id
-              slug
-              songTitle
-              songFile {
-                url
-              }
+query GetChoosenData($id : ID!) {
+    artists(where: {id: $id} ){
+        ...on Artist {
+          id
+          slug
+          name
+          artistImage {
+            url
           }
         }
+    }
+    albums(where: {id: $id} ) {
+      ...on Album {
+        id
+        slug
+        albumName
+        albumImage {
+          url
+        }
+      }
+    }
+    songs(where: {id: $id} ) {
+      ...on Song {
+        id
+        slug
+        songTitle
+        songFile {
+          url
+        }
+      }
     }
 }
 `;

@@ -68,7 +68,7 @@ export default function SingleArtist() {
         console.log(key);
         let tempSelect = {...selected};
         tempSelect = e.target.value;
-        console.log(tempSelect);
+        console.log( typeof tempSelect);
         setSelected(tempSelect);
         setDialogOpen(true);
         
@@ -85,7 +85,7 @@ export default function SingleArtist() {
         if(error)
             return <p>Error...</p>
         if(data !== null) {
-            console.log(data.artist);
+           // console.log(data.artist);
            // console.log(data.artist.songs);
         }
     
@@ -116,10 +116,12 @@ export default function SingleArtist() {
                                         /> 
                                 </ListItem>
                                {data.artist.albums.length !== 0 ? data.artist.albums.map((album, id) => {
-                                   console.log(album.id);
+                                   //console.log(album.id);
+                                   const labelId = `checkbox-list-secondary-label-${album.albumName}`;
                                     return (
                                         <List key = {id} style = {{marginTop: '25px', marginBottom: '25px', paddingLeft: '60px' , display: 'flex', flexDirection: 'column'}}>
-                                            <ListItem className = {classes.albumTitle}>
+                                            <ListItem //button component = {Link} to ={`/artist/album/${album.slug}`} 
+                                                className = {classes.albumTitle}>
                                                 <FormControlLabel
                                                     control = {
                                                         <Checkbox icon = {<FavoriteBorder />}
@@ -130,7 +132,6 @@ export default function SingleArtist() {
                                                             onChange = {handleSelected}
                                                             //checked = {checked.indexOf(album) !== -1}
                                                             />
-                                                            {dialogOpen && <SelectedFavorit selected = {selected} dialogOpen = {dialogOpen} />}
                                                 <ListItemAvatar>
                                                     <Avatar 
                                                         variant = {album.albumImage ? 'square' : null}
@@ -139,7 +140,8 @@ export default function SingleArtist() {
                                                         src = {album.albumImage ? album.albumImage.url : logo}
                                                     />
                                                 </ListItemAvatar>
-                                                <ListItemText className = {classes.listItemHeaderText} 
+                                                <ListItemText id = {labelId}
+                                                        className = {classes.listItemHeaderText} 
                                                         primary = {album.albumName}
                                                 />
                                             </ListItem>
@@ -154,6 +156,8 @@ export default function SingleArtist() {
                                                                     checkedIcon = {<Favorite />}
                                                                     name = 'checked'/>}
                                                                     edge = 'start'
+                                                                    value = {song.id}
+                                                                    onChange = {handleSelected}
                                                                     //onChange = {handleToggle(song)}
                                                                     //checked = {checked.indexOf(song) !== -1}
                                                                     />
@@ -179,6 +183,7 @@ export default function SingleArtist() {
                                 }) : 
                                 data.artist.songs.map((song, id) => {
                                     console.log(data.artist.songs);
+                                    const labelId = `checkbox-list-secondary-label-${song.songTitle}`;
                                     return(
                                         <ListItem key = {id}>
                                             <FormControlLabel 
@@ -187,6 +192,8 @@ export default function SingleArtist() {
                                                     checkedIcon = {<Favorite />}
                                                     name = 'checked'/>}
                                                     edge = 'start'
+                                                    value = {song.id}
+                                                    onChange = {handleSelected}
                                                     //onChange = {handleToggle(song)}
                                                     //checked = {checked.indexOf(song) !== -1}
                                                     />
@@ -196,7 +203,7 @@ export default function SingleArtist() {
                                                     src = {logo}
                                                 />
                                             </ListItemAvatar>
-                                            <ListItemText className = {classes.listItemHeaderText} 
+                                            <ListItemText id = {labelId} className = {classes.listItemHeaderText} 
                                                     primary = {song.songTitle}
                                             />
                                             {song.songFile ? 
@@ -213,6 +220,7 @@ export default function SingleArtist() {
                     </Grid>
                 </Grid>
             </Grid>
+            {dialogOpen && <SelectedFavorit selected = {selected} dialogOpen = {dialogOpen} />}
         </main>
 
     )

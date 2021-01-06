@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar } from '@material-ui/core';
 import Header from './Header';
-import Search from './Search';
+import Search from '../Search';
 
 
 const drawerWidth = 220;

@@ -31,6 +31,11 @@ const App = () => {
                       <Artist  open={open} handleDrawerOpen={handleDrawerToggle} />
                     </Route>
 
+                    <Route path="/artist/album/:slug" >
+                      <Artist  open={open} handleDrawerOpen={handleDrawerToggle} />
+                    </Route>
+
+
               </Switch>
           </Router>
       </div>

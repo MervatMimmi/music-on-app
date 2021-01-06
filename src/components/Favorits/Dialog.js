@@ -1,9 +1,9 @@
 import React from 'react';
-import {Dialog, DialogTitle, DialogContent,} from '@material-ui/core';
+import {Dialog, DialogTitle,} from '@material-ui/core';
 
 const DialogFavorit =({selected, dialogOpen}) => {
 
-    console.log(selected);
+    
 
     return(
         <div>

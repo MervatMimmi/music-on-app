@@ -54,7 +54,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SingleAlbum({results, selected,dialogOpen, handleSelected}) {
     const classes = useStyles();
-    console.log(results);
+    
+
+    const labelId = `checkbox-list-secondary-label-${results.song.songTitle}`;
 
     return (
         <main >
@@ -65,8 +67,25 @@ export default function SingleAlbum({results, selected,dialogOpen, handleSelecte
                         <Grid item xs = {12} lg>
                             <List dense className = {classes.root}>
                                 <ListItem dense className = {classes.listItemHeader}>
-                                        <ListItemText className = {classes.listItemHeaderText} 
-                                            primary = {results.song.SongTitle}
+                                    <ListItemAvatar>
+                                        <Avatar 
+                                            alt = {logo + 1}
+                                            src = {results.song ? results.song.artists[0].artistImage.url : null}
+                                            />
+                                            </ListItemAvatar>
+                                        {results.song.artists[1] ? 
+                                            <ListItemAvatar>
+                                            <Avatar 
+                                                alt = {logo + 1}
+                                                src = {results.song ? results.song.artists[1].artistImage.url : null}
+                                                />
+                                                </ListItemAvatar> : null }
+                                        <ListItemText id = {labelId} 
+                                            className = {classes.listItemHeaderText} 
+                                            primary = {results.song.songTitle}
+                                            secondary = {results.song.artists[1] ?  
+                                                `${results.song.artists[0].name} with ${results.song.artists[1].name}`
+                                                : results.song.artists[0].name}
                                             /> 
                                     </ListItem>
                                     <ListItem className = {classes.albumTitle}>

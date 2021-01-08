@@ -52,7 +52,7 @@ const SearchData = ({input, updateInput}) => {
     const classes = useStyles();
     const [searchData, setSearchData] = useState([]);
     const [redirect, setRedirect] = useState(false);
-    const { error, data } = useQuery(
+    const { loading, error, data } = useQuery(
         GET_SEARCH_DATA, {
           variables: {search : input}
         }
@@ -62,41 +62,49 @@ const SearchData = ({input, updateInput}) => {
           if(error) {
               return <p>Error...</p>
           }
-          if(data !== undefined) {
+          if(data) {
             console.log(data);
             setSearchData(data);
-           
         }
     }, [data])
 
-    
+    console.log(searchData);
 
     return (
         <form className={classes.search}>
            
-            {data !== undefined && data.artists.length >= 1 ? 
-            data.artists.map((artist, id) => {
+            {loading || searchData === undefined || searchData.length === 0 ? 
+                null
+            : searchData.artists.map((artist, id) => {
                 return (
                     <div key = {id}>
                         <Redirect to ={`/artist/${artist.slug}`} />
                     </div>
-                    
                 )
-            }) : null}
+            })}
 
-            {data !== undefined && data.albums.length >= 1 ? 
-                data.albums.map((album, id) => {
-                    return (
-                    <Redirect key = {id} to ={`/album/${album.slug}`} />
-                )
-            }) : null}
-        
-            {data !== undefined && data.songs.length >= 1 ? 
-                data.songs.map((song, id) => {
+            {loading || searchData === undefined || searchData.length === 0 ? 
+                null
+            : searchData.albums.map((album, id) => {
                 return (
-                    <Redirect key = {id} to ={`/song/${song.slug}`} />
+                    <div key = {id}>
+                        <Redirect to ={`/album/${album.slug}`} />
+                    </div>
                 )
-            }) : null}  
+            })}
+
+            {loading || searchData === undefined || searchData.length === 0 ? 
+                null
+            : searchData.songs.map((songs, id) => {
+                console.log(searchData.songs);
+                return (
+                    <div key = {id}>
+                        <Redirect to ={`/song/${songs.slug}`} />
+                    </div>
+                )
+            })}
+
+            
                 
             <div className={classes.searchIcon}>
                 <SearchIcon />

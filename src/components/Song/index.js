@@ -42,6 +42,8 @@ export default function Song() {
             setChecked(e.target.value);
             
         };*/
+
+    console.log(results);
     
     return (
         <div>
@@ -75,16 +77,6 @@ query GetSong($slug: String!) {
                 slug
                 name
                 artistImage {
-                    url
-                }
-            }
-        }
-        album {
-            ...on Album {
-                id
-                slug
-                albumName
-                albumImage {
                     url
                 }
             }

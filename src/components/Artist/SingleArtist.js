@@ -79,7 +79,9 @@ export default function SingleArtist({results, selected,dialogOpen, handleSelect
                                    //console.log(album.id);
                                    const labelId = `checkbox-list-secondary-label-${album.albumName}`;
                                     return (
-                                        <List key = {id} style = {{marginTop: '25px', marginBottom: '25px', paddingLeft: '60px' , display: 'flex', flexDirection: 'column'}}>
+                                        <List key = {id} 
+                                        //style = {{marginTop: '25px', marginBottom: '25px', , display: 'flex', flexDirection: 'column'}}
+                                        >
                                             <ListItem button component = {Link} to ={`/album/${album.slug}`} 
                                                 className = {classes.albumTitle}>
                                                 <FormControlLabel
@@ -90,6 +92,7 @@ export default function SingleArtist({results, selected,dialogOpen, handleSelect
                                                             edge = 'start'
                                                             value = {album.id}
                                                             onChange = {handleSelected}
+                                                            style = {{ paddingLeft: '60px'}}
                                                             //checked = {checked.indexOf(album) !== -1}
                                                             />
                                                 <ListItemAvatar>

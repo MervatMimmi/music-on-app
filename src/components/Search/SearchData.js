@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { InputBase } from '@material-ui/core';
+import { Redirect } from 'react-router-dom';
+import { Form, InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { useQuery, gql } from '@apollo/client';
 import SearchPage from './SearchPage';
+
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -47,29 +49,55 @@ const useStyles = makeStyles((theme) => ({
 }));
  
 const SearchData = ({input, updateInput}) => {
-    const [searchData, setSearchData] = useState([]);
     const classes = useStyles();
+    const [searchData, setSearchData] = useState([]);
+    const [redirect, setRedirect] = useState(false);
     const { error, data } = useQuery(
-      GET_SEARCH_DATA, {
-        variables: {search : input}
-      }
-    );
+        GET_SEARCH_DATA, {
+          variables: {search : input}
+        }
+      );
 
     useEffect(()=> {
-        getData();
-    })
-
-    const getData = () => {
-    if(error)
-        return <p>Error...</p>
-    if(data) {
-        console.log(data);
-        setSearchData(data);
+          if(error) {
+              return <p>Error...</p>
+          }
+          if(data !== undefined) {
+            console.log(data);
+            setSearchData(data);
+           
         }
-    }
+    }, [data])
+
     
+
     return (
-        <div className={classes.search}>
+        <form className={classes.search}>
+           
+            {data !== undefined && data.artists.length >= 1 ? 
+            data.artists.map((artist, id) => {
+                return (
+                    <div key = {id}>
+                        <Redirect to ={`/artist/${artist.slug}`} />
+                    </div>
+                    
+                )
+            }) : null}
+
+            {data !== undefined && data.albums.length >= 1 ? 
+                data.albums.map((album, id) => {
+                    return (
+                    <Redirect key = {id} to ={`/album/${album.slug}`} />
+                )
+            }) : null}
+        
+            {data !== undefined && data.songs.length >= 1 ? 
+                data.songs.map((song, id) => {
+                return (
+                    <Redirect key = {id} to ={`/song/${song.slug}`} />
+                )
+            }) : null}  
+                
             <div className={classes.searchIcon}>
                 <SearchIcon />
             </div>
@@ -81,9 +109,9 @@ const SearchData = ({input, updateInput}) => {
                 input: classes.inputInput,
                 }}
                 inputProps={{ 'aria-label': 'search' }}
+                
             />
-            {searchData && <SearchPage  searchData = {searchData} /> }
-        </div>
+        </form>
 
     )
 }

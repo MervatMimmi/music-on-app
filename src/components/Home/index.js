@@ -12,18 +12,21 @@ export default function Home() {
   })
 
   const getData =() => {
-  if(loading) 
-      return <p>Loading artist...</p>
   if(error)
       return <p>Error ...</p>
   if(data) {
-    console.log(data.artists);
-    setResults(data.artists);
-  }
+    console.log(data);
+    return setResults(data);
+  } 
 }
 
   return (
-        <ArtistList results = {results} />
+    <div>
+      {loading || results.length === 0 
+      ? <h1>Loading Artists...</h1> 
+      : <ArtistList results = {results} /> }
+    </div>
+      
   )
 }
 

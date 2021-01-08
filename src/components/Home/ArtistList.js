@@ -48,10 +48,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ArtistList({results, open}) {
     const classes = useStyles();
+    console.log(results);
     
         return (
             <main>
-            <div className={classes.toolbar} />
+          <div className={classes.toolbar} />
             <Grid container item xs={12} justify="center">
             <Grid container item xs={12} spacing={6} className = {classes.grid} >
             <Grid container item xs = {12} style = {{margin: '25px'}}>
@@ -61,7 +62,7 @@ export default function ArtistList({results, open}) {
                     <ListItemText className = {classes.listItemHeaderText} 
                         primary = 'Artist List'/> 
                 </ListItem>
-                {results.map((artist, id)  => {
+                {results.artists.map((artist, id)  => {
                     const labelId = `checkbox-list-secondary-label-${artist.name}`;
                     return (
                         <ListItem key = {id} button component = {Link} to ={`/artist/${artist.slug}`} style = {{marginTop: '25px', marginBottom: '25px', paddingLeft: '60px' }}>

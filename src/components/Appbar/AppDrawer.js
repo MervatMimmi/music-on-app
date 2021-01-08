@@ -75,7 +75,7 @@ const SideDrawer = (props) => {
                         [classes.drawerClose]: !open
                     })
                 }}
-            // style={{overflow:"hidden"}}
+            style={{overflow:"hidden"}}
             >
                 <div className={classes.toolbar} >
                     {open ? <IconButton onClick={props.handleDrawerClose} className={classes.hoverEffect} >
@@ -96,7 +96,7 @@ const SideDrawer = (props) => {
 
                 <List className={classes.textWhite} style={{ marginTop: "40px" }}>
 
-                    <NavLink exact activeClassName={classes.active} className="link" to={"/home"} >
+                    <NavLink exact activeClassName={classes.active} className="link" to={"/"} >
                         <ListItem button className={classes.hoverEffect}>
                             <Tooltip title={!open ? "Home" : ""} placement="right" arrow>
                                 <ListItemIcon className={classes.textWhite} >

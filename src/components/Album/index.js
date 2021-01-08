@@ -1,49 +1,75 @@
-import React from 'react';
-import React, {useState} from 'react';
-import { useParams } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Checkbox, FormControlLabel, Divider} from '@material-ui/core';
-import { Favorite, FavoriteBorder } from '@material-ui/icons';
-import logo from '../../Image/logo.jpg';
-import SelectedFavorit from '../Favorits';
-import React, { useEffect, useState } from 'react';
-import { useQuery, gql }  from '@apollo/client';
-import AlbumList from './AlbumList';
-import { getDefaultValues } from '@apollo/client/utilities';
+import SingleAlbum from './SingleAlbum';
 
 
+  
 export default function Album() {
-    const { loading, error, data } = useQuery(ALL_ALBUM_DATA);
     const [results, setResults] = useState([]);
+    const [selected, setSelected] = useState([]);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const {slug} = useParams();
+    const { loading, error, data} = useQuery(
+        GET_SINGLE_ALBUM, {
+            variables: {slug: slug}
+        }
+    );
 
     useEffect(() => {
         getData();
     })
 
+    const handleSelected =(e, key) => {
+        //console.log(key);
+        let tempSelect = {...selected};
+        tempSelect = e.target.value;
+        //console.log( typeof tempSelect);
+        setSelected(tempSelect);
+        setDialogOpen(true);  
+    }
+
     const getData = () => {
-        if(loading)
-            return <p>Loading album...</p>
         if(error)
             return <p>Error...</p>
         if(data) {
-            console.log(data.album);
+            return setResults(data);
+          
         }
     }
 
+    console.log(results);
+    
+    
+     /*   const handleToggle = (e) => () => {
+            console.log(e.target.value);
+            setChecked(e.target.value);
+            
+        };*/
+    
     return (
-        <AlbumSongList results = {results} />
+        <div>
+            {loading || results.length === 0 ? 
+                <h1>Loading Album...</h1> 
+              :  <SingleAlbum 
+                results = {results} 
+                selected = {selected}
+                dialogOpen ={dialogOpen} 
+                handleSelected = {handleSelected}/>
+            }
+        </div>
+       
     )
 }
+    
 
-const ALL_ALBUM_DATA = gql`
-query GetAllAlbumData {
-    album {
+const GET_SINGLE_ALBUM = gql`
+query SingleAlbum($slug: String!) {
+    album(where: {slug: $slug}) {
         id
         slug
         albumName
-        AlbumImage {
+        albumImage {
           url
         }
         songs {

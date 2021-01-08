@@ -3,7 +3,11 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AppbarDrawer from './components/Appbar';
 import Home from './components/Home';
 import Artist from './components/Artist';
+import Album from './components/Album';
+import Song from './components/Song';
+
 import './App.css';
+
 
 
 
@@ -31,10 +35,13 @@ const App = () => {
                       <Artist  open={open} handleDrawerOpen={handleDrawerToggle} />
                     </Route>
 
-                    <Route path="/artist/album/:slug" >
-                      <Artist  open={open} handleDrawerOpen={handleDrawerToggle} />
+                    <Route path="/album/:slug" >
+                      <Album  open={open} handleDrawerOpen={handleDrawerToggle} />
                     </Route>
 
+                    <Route path="/song/:slug" >
+                      <Song  open={open} handleDrawerOpen={handleDrawerToggle} />
+                    </Route>
 
               </Switch>
           </Router>

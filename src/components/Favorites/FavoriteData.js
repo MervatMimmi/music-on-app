@@ -23,7 +23,7 @@ export default function FavoriteData({results}) {
         }
     }
     return (
-        <FavoriteList favoriteData  = {favoriteData} loading = {loading}/>
+        {/*<FavoriteList favoriteData  = {favoriteData} loading = {loading}/>*/}
     )
 }
 

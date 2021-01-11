@@ -12,19 +12,22 @@ export default function Favorite() {
   });
 
   const getFavoriteArray = () => {
+    if(loading)
+      return <p>Loading list...</p>
     if(error)
       return <p>Error...</p>
     if(data) {
-      //console.log(data);
+      console.log(data);
       return setResults(data);
     }
   }
+  console.log(results.favoriteId);
 
   return (
     <div>
-      {loading || results.length === 0 
+     {loading || results.length === 0 
         ? <h1>Loading Favorite List...</h1>
-        : <FavoriteData results = {results} />}
+     : <FavoriteData results = {results} />}
     </div>
   )
 }

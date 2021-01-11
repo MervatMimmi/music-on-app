@@ -1,11 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Checkbox, FormControlLabel} from '@material-ui/core';
+import { Grid, List, ListItem, ListItemAvatar, Avatar, 
+        ListItemText, ListItemSecondaryAction, Checkbox, 
+        FormControlLabel} from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons';
 import logo from '../../Image/logo.jpg';
-import SelectedFavorit from '../Favorits';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +30,14 @@ const useStyles = makeStyles((theme) => ({
             boxShadow: "none",
         },
     },
+    list : {
+        marginTop: '25px', 
+        marginBottom: '25px', 
+        paddingLeft: '40px', 
+        paddingRight: '40px', 
+        display: 'flex', 
+        flexDirection: 'column',
+    },
     listItemHeader: {
         background: "rgb(230, 230, 230)",
         color: "rgb(128, 128, 128)",
@@ -52,10 +59,9 @@ const useStyles = makeStyles((theme) => ({
     
   }));
 
-export default function SingleAlbum({results, selected,dialogOpen, handleSelected}) {
+export default function SingleAlbum({results, selected, handleSelected}) {
     const classes = useStyles();
     
-
     const labelId = `checkbox-list-secondary-label-${results.song.songTitle}`;
 
     return (
@@ -66,60 +72,74 @@ export default function SingleAlbum({results, selected,dialogOpen, handleSelecte
                     <Grid container item xs = {12} >
                         <Grid item xs = {12} lg>
                             <List dense className = {classes.root}>
+
                                 <ListItem dense className = {classes.listItemHeader}>
                                     <ListItemAvatar>
-                                        <Avatar 
+                                        <Avatar className = {classes.large}
+                                            variant = 'square'
+                                            width = 'auto'
+                                            height = '100%'
                                             alt = {logo + 1}
                                             src = {results.song ? results.song.artists[0].artistImage.url : null}
-                                            />
-                                            </ListItemAvatar>
-                                        {results.song.artists[1] ? 
-                                            <ListItemAvatar>
-                                            <Avatar 
+                                        />
+                                    </ListItemAvatar>
+                                    {results.song.artists[1] ? 
+                                        <ListItemAvatar>
+                                            <Avatar className = {classes.large}
+                                                variant = 'square'
+                                                width = 'auto'
+                                                height = '100%'
                                                 alt = {logo + 1}
                                                 src = {results.song ? results.song.artists[1].artistImage.url : null}
-                                                />
-                                                </ListItemAvatar> : null }
+                                            />
+                                        </ListItemAvatar> : null }
+
                                         <ListItemText id = {labelId} 
                                             className = {classes.listItemHeaderText} 
                                             primary = {results.song.songTitle}
                                             secondary = {results.song.artists[1] ?  
                                                 `${results.song.artists[0].name} with ${results.song.artists[1].name}`
                                                 : results.song.artists[0].name}
-                                            /> 
-                                    </ListItem>
+                                        /> 
+                                </ListItem>
+                                <List className = {classes.list}>
                                     <ListItem className = {classes.albumTitle}>
-                                                            <FormControlLabel
-                                                                control = {
-                                                                <Checkbox icon = {<FavoriteBorder />}
-                                                                    checkedIcon = {<Favorite />}
-                                                                    name = 'checked'/>}
-                                                                    edge = 'start'
-                                                                    value = {results.song.id}
-                                                                    onChange = {handleSelected}
-                                                                    />
-                                                            <ListItemAvatar>
-                                                                <Avatar 
-                                                                    alt = {results.song + 1}
-                                                                    src = {logo}
-                                                                    />
-                                                            </ListItemAvatar>
-                                                            <ListItemText
-                                                                className = {classes.listItemHeaderText} 
-                                                                primary = {results.song.songTitle}
-                                                                />
-                                                            {results.song.songFile ? 
-                                                                <audio controls>
-                                                                <source src = {results.song.songFile.url}
-                                                                        type = 'audio/mpeg' />
-                                                                </audio> : null }
-                                                        </ListItem>
+                                        <ListItemAvatar style = {{paddingLeft: '48px'}}>
+                                            <Avatar 
+                                                alt = {results.song + 1}
+                                                src = {logo}
+                                            />
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            className = {classes.listItemHeaderText} 
+                                            primary = {results.song.songTitle}
+                                            />
+                                        {results.song.songFile ? 
+                                            <div style = {{marginLeft: '-25px'}}>
+                                                <audio controls>
+                                                    <source src = {results.song.songFile.url}
+                                                        type = 'audio/mpeg' />
+                                                </audio>
+                                            </div> 
+                                        : null }
+                                        <ListItemSecondaryAction>
+                                            <FormControlLabel
+                                                control = {
+                                                    <Checkbox icon = {<FavoriteBorder />}
+                                                        checkedIcon = {<Favorite />}
+                                                        name = 'checked'/>}
+                                                        edge = 'start'
+                                                        value = {results.song.id}
+                                                        onChange = {handleSelected}
+                                                    />
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
                                 </List>
-                            </Grid>
+                            </List>
                         </Grid>
                     </Grid>
                 </Grid>
-            {dialogOpen && <SelectedFavorit selected = {selected} dialogOpen = {dialogOpen} />}
+            </Grid>
         </main>
     )
 }

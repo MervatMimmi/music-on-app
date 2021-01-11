@@ -33,6 +33,7 @@ appBarShift: {
   },
 }))
 
+
 const Appbar = ({open}) => {
   const classes = useStyles();
 
@@ -45,7 +46,7 @@ const Appbar = ({open}) => {
         <Toolbar>
           <Header title />
           <Search />
-          <div className = {classes.section}/>
+            <div className = {classes.section}/>
         </Toolbar>
       </AppBar>
     </div>

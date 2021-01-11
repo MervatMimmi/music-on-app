@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Form, InputBase } from '@material-ui/core';
+import { InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { useQuery, gql } from '@apollo/client';
-import SearchPage from './SearchPage';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -51,24 +51,26 @@ const useStyles = makeStyles((theme) => ({
 const SearchData = ({input, updateInput}) => {
     const classes = useStyles();
     const [searchData, setSearchData] = useState([]);
-    const [redirect, setRedirect] = useState(false);
     const { loading, error, data } = useQuery(
         GET_SEARCH_DATA, {
           variables: {search : input}
         }
       );
+      
+    useEffect(() => {
+        getData();
+    })
 
-    useEffect(()=> {
-          if(error) {
-              return <p>Error...</p>
-          }
-          if(data) {
-            console.log(data);
-            setSearchData(data);
+    const getData = () => {
+        if(error)
+            return <p>Error...</p>
+        if(data) {
+            //console.log(data);
+            return setSearchData(data); 
         }
-    }, [data])
+    }
 
-    console.log(searchData);
+    //console.log(searchData);
 
     return (
         <form className={classes.search}>

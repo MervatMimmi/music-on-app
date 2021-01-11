@@ -53,9 +53,8 @@ const useStyles = makeStyles((theme) => ({
     },
     textWhite: {
        color: '#e7e7de',
-    }
-    
-})) 
+    },
+}));
 
 const SideDrawer = (props) => {
     const { open } = props;
@@ -103,18 +102,18 @@ const SideDrawer = (props) => {
                                     <HomeIcon fontSize="large" />
                                 </ListItemIcon>
                             </Tooltip>
-                            <ListItemText primary="MusicON" className={classes.textWhite}/>
+                            <ListItemText primary="Home" className={classes.textWhite}/>
                         </ListItem>
                     </NavLink>
 
-                    <NavLink activeClassName={classes.active} className="link" to="/something">
+                    <NavLink activeClassName={classes.active} className="link" to="/favorites">
                         <ListItem button className={classes.hoverEffect}>
-                            <Tooltip title={!open ? "List" : ""} placement="right" arrow>
+                            <Tooltip title={!open ? "Favorite list" : ""} placement="right" arrow>
                                 <ListItemIcon className={classes.textWhite}>
                                     <QueueMusic fontSize="large" />
                                 </ListItemIcon>
                             </Tooltip>
-                            <ListItemText primary="List" className={classes.textWhite} />
+                            <ListItemText primary="Favorite list" className={classes.textWhite} />
                         </ListItem>
                     </NavLink>
 

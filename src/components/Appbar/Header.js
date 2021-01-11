@@ -12,15 +12,15 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         paddingTop: '10px',
-        paddingRight: '25px'
+        //paddingRight: '15px'
     },
     logo: {
-        maxHeight: '55px',
-        
+        maxHeight: '55px', 
+        paddingLeft: '15px',
     },
 }))
 
-const Header = ({title}) => {
+const Header = () => {
     const classes = useStyles();
 
     return (

@@ -5,10 +5,7 @@ import Home from './components/Home';
 import Artist from './components/Artist';
 import Album from './components/Album';
 import Song from './components/Song';
-
-import './App.css';
-
-
+import Favorites from './components/Favorites';
 
 
 const App = () => {
@@ -43,6 +40,9 @@ const App = () => {
                       <Song  open={open} handleDrawerOpen={handleDrawerToggle} />
                     </Route>
 
+                    <Route path="/favorites" >
+                      <Favorites  open={open} handleDrawerOpen={handleDrawerToggle} />
+                    </Route>
               </Switch>
           </Router>
       </div>

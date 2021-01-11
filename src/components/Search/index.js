@@ -5,7 +5,7 @@ const Search = () => {
     const [input, setInput] = useState('');
 
     const updateInput = (e) => {
-        console.log(e.target.value);
+        //console.log(e.target.value);
         setInput(e.target.value);
     };
 
